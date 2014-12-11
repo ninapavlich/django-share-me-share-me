@@ -92,9 +92,9 @@ class SocialShareLink( models.Model ):
     type = models.CharField("Service Type", max_length=255, 
         null=True, blank=True, choices=SERVICE_TYPES)
 
-    to_template = models.TextField(_("To Template"), blank=True, null=True, help_text="Applicable to type Email. Available contact variables: {{url}}, {{title}}, {{site}}")
-    title_template = models.TextField(_("Title Template"), blank=True, null=True, help_text="Available contact variables: {{url}}, {{title}}, {{site}}")
+    title_template = models.TextField(_("Title Template"), blank=True, null=True, help_text="Applicable to all types but Facebook and Google Plus. Available contact variables: {{url}}, {{title}}, {{site}}")
     description_template = models.TextField(_("Description Template"), blank=True, null=True, help_text="Applicable to type Email and Tumblr. Available contact variables: {{url}}, {{title}}, {{site}}")
+    to_template = models.TextField(_("To Template"), blank=True, null=True, help_text="Applicable to type Email. Available contact variables: {{url}}, {{title}}, {{site}}")
 
     @property
     def font_awesome_class(self):
@@ -138,12 +138,20 @@ class SocialShareLink( models.Model ):
     def get_email_share_url(self, page_url, page_title):
         site = Site.objects.get_current()
         query_root = 'mailto:'
-        params = { 
-            'subject': self.get_rendered_content(self.title_template, page_url, page_title, site),
-            'body': self.get_rendered_content(self.description_template, page_url, page_title, site)
-        }
+        
         to_rendered = self.get_rendered_content(self.to_template, page_url, page_title, site) if self.to_template else ''
-        return '%s%s?%s' % (query_root, to_rendered, urllib.urlencode(params))
+        
+        #body_cleaned = body.replace("$linebreak", "%0D%0A")
+        body_cleaned = urllib.quote_plus(self.get_rendered_content(self.description_template, page_url, page_title, site))
+        body_cleaned = body_cleaned.replace("+", "%20")
+        
+
+        #subject_cleaned = subject.replace("|", "%7C")
+        subject_cleaned = urllib.quote_plus(self.get_rendered_content(self.title_template, page_url, page_title, site),)
+        subject_cleaned = subject_cleaned.replace("+", "%20")
+
+        return '%s%s?body=%s&subject=%s' % (query_root, to_rendered, body_cleaned, subject_cleaned)
+        
 
     def get_twitter_share_url(self, page_url, page_title):
         site = Site.objects.get_current()
