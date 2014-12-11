@@ -1,0 +1,44 @@
+@mixin sticky(){
+    position:fixed;
+	left: 0px;
+	top: 100px;
+
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	-moz-opacity:0;
+	-khtml-opacity: 0;
+    opacity: 0;
+
+	transition: opacity .25s ease-in-out;
+	-moz-transition: opacity .25s ease-in-out;
+	-webkit-transition: opacity .25s ease-in-out;
+
+    &.inited{
+
+    	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+		filter: alpha(opacity=100);
+		-moz-opacity:1;
+		-khtml-opacity: 1;
+	    opacity: 1;
+
+    }
+
+	&.sticking{
+		position: absolute;		
+	}
+}
+
+.sticky{
+	
+	@include sticky();
+
+}
+.no-js{
+	.sticky{
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+		filter: alpha(opacity=100);
+		-moz-opacity:1;
+		-khtml-opacity: 1;
+	    opacity: 1;
+	}
+}
