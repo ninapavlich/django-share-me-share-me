@@ -12,7 +12,7 @@ from django.template import Template
 
 class SocialShareSettings( models.Model ):
 
-    site = models.ForeignKey(Site)
+    site = models.ForeignKey(Site, null=True, blank=True)
 
     track_social_share_clicks = models.BooleanField( _("Track Social Share Clicks"), default = True )
     
@@ -25,7 +25,10 @@ class SocialShareSettings( models.Model ):
         try:
             return SocialShareSettings.objects.filter(site=current_site)[0]
         except:
-            return None
+            try:
+                return SocialShareSettings.objects.all[0]
+            except:
+                return None
      
 
 # class SocialShareTrack( models.Model ):

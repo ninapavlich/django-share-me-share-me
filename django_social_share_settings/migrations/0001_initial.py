@@ -11,7 +11,7 @@ class Migration(SchemaMigration):
         # Adding model 'SocialShareSettings'
         db.create_table(u'django_social_share_settings_socialsharesettings', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'], null=True, blank=True)),
             ('track_social_share_clicks', self.gf('django.db.models.fields.BooleanField')(default=True)),
         ))
         db.send_create_signal(u'django_social_share_settings', ['SocialShareSettings'])
@@ -51,7 +51,7 @@ class Migration(SchemaMigration):
         u'django_social_share_settings.socialsharesettings': {
             'Meta': {'object_name': 'SocialShareSettings'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']"}),
+            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']", 'null': 'True', 'blank': 'True'}),
             'track_social_share_clicks': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
         },
         u'sites.site': {
