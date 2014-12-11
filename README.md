@@ -50,6 +50,8 @@ To output share icons based on the settings from the cms, use the
 
 #Sticky Usage
 For sticky behavior, include or compile in the styles and javscript.
+
+See screencast of sticky widget in action: http://screencast.com/t/Gm8Sah4IMQ
 ```html
 #base-template.html
 <!-- Include Font Awesome  for easier social icons -->
@@ -73,10 +75,13 @@ For sticky behavior, include or compile in the styles and javscript.
 *bottomSelector* is the selector for the item the sticky widget should not go below.
 
 *topMargin* refers to the top margin the sticky item will have when aligned to the top selector item
+
 ![topMargin example](/../master/docs/screenshots/top_margin.png?raw=true "topMargin example")
 
 *fixedMargin* refers to the top margin the sticky item will have when the screen has scrolled past the top selector item
+
 ![fixedMargin example](/../master/docs/screenshots/fixed_margin.png?raw=true "fixedMargin example")
 
 *bottomMargin* refers to the bottom margin the sticky item will have when aligned to the bottom selector item
+
 ![bottomMargin example](/../master/docs/screenshots/bottom_margin.png?raw=true "bottomMargin example")
