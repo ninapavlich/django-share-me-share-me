@@ -8,64 +8,145 @@ from django.contrib.sites.models import Site
 from django.template import Template
 
 
-class BaseSocialShareSettings( models.Model ):
+
+
+class SocialShareSettings( models.Model ):
+
+    site = models.ForeignKey(Site)
 
     track_social_share_clicks = models.BooleanField( _("Track Social Share Clicks"), default = True )
     
+    def get_social_share_links(self):
+        return SocialShareLink.objects.filter(parent=self).order_by('order')
+
+    @staticmethod
+    def get_site_settings():
+        current_site = Site.objects.get_current()
+        try:
+            return SocialShareSettings.objects.filter(site=current_site)[0]
+        except:
+            return None
+     
+
+# class SocialShareTrack( models.Model ):
+
+#     created = models.DateTimeField(_('Created Date'), auto_now_add=True, 
+#         blank=True, null=True)
+
+#     service = models.CharField()
+#     url = models.CharField()
+#     ipaddress = models.CharField()
+
+
+class SocialShareLink( models.Model ):
+
+    parent = models.ForeignKey(SocialShareSettings)
+    order = models.PositiveIntegerField('order', null = True, blank=True)
+
+
+    TYPE_EMAIL = 'email'
+    TYPE_TWITTER = 'twitter'
+    TYPE_FACEBOOK = 'facebook'
+    TYPE_GOOGLEPLUS = 'googleplus'
+    TYPE_LINKEDIN = 'linkedin'
+    TYPE_PINTEREST = 'pinterest'
+    TYPE_DIGG = 'digg'
+    TYPE_TUMBLR = 'tumblr'
+    TYPE_REDDIT = 'reddit'
+    TYPE_STUMBLEUPON = 'stumbleupon'
+    TYPE_DELICIOUS = 'delicious'
     
-    #Share Settings:
-    enable_email = models.BooleanField( _("Enable Email"), default = True )
-    email_to_template = models.TextField(_("Email To Template"), blank=True, null=True)
-    email_subject_template = models.TextField(_("Email Subject Template"), blank=True, null=True)
-    email_body_template = models.TextField(_("Email Body Template"), blank=True, null=True)
 
-    enable_twitter = models.BooleanField( _("Enable Twitter"), default = True )
-    twitter_share_template = models.TextField(_("Twitter Share Text Template"), blank=True, null=True)
+    SERVICE_TYPES = (
+        (TYPE_EMAIL, "Email"),
+        (TYPE_TWITTER, "Twitter"),
+        (TYPE_FACEBOOK, "Facebook"),
+        (TYPE_GOOGLEPLUS, "Google Plus"),
+        (TYPE_LINKEDIN, "LinkedIn"),
+        (TYPE_PINTEREST, "Pinterest"),
+        (TYPE_DIGG, "Digg"),
+        (TYPE_TUMBLR, "Tumblr"),
+        (TYPE_REDDIT, "Reddit"),
+        (TYPE_STUMBLEUPON, "StumbleUpon"),
+        (TYPE_DELICIOUS, "Delicious"),
+    )
 
-    enable_facebook = models.BooleanField( _("Enable Facebook"), default = True )
-    facebook_title_template = models.TextField(_("Facebook Share Title Template"), blank=True, null=True)
+    FONT_AWESOME_CLASSES = {
+        TYPE_EMAIL: "envelope",
+        TYPE_TWITTER: "twitter",
+        TYPE_FACEBOOK: "facebook",
+        TYPE_GOOGLEPLUS: "google-plus",
+        TYPE_LINKEDIN: "linkedin",
+        TYPE_PINTEREST: "pinterest",
+        TYPE_DIGG: "digg",
+        TYPE_TUMBLR: "tumblr",
+        TYPE_REDDIT: "reddit",
+        TYPE_STUMBLEUPON: "stumbleupon",
+        TYPE_DELICIOUS: "delicious",
+    }
 
-    enable_googleplus = models.BooleanField( _("Enable Google Plus"), default = True )
 
-    enable_linkedin = models.BooleanField( _("Enable LinkedIn"), default = True )
-    linkedin_title_template = models.TextField(_("LinkedIn Share Title Template"), blank=True, null=True)
+    type = models.CharField("Service Type", max_length=255, 
+        null=True, blank=True, choices=SERVICE_TYPES)
 
-    enable_pinterest = models.BooleanField( _("Enable Pinterest"), default = True )
-    pinterest_description_template = models.TextField(_("Pinterest Share Description Template"), blank=True, null=True)
+    to_template = models.TextField(_("To Template"), blank=True, null=True, help_text="Applicable to type Email. Available contact variables: {{url}}, {{title}}, {{site}}")
+    title_template = models.TextField(_("Title Template"), blank=True, null=True, help_text="Available contact variables: {{url}}, {{title}}, {{site}}")
+    description_template = models.TextField(_("Description Template"), blank=True, null=True, help_text="Applicable to type Email and Tumblr. Available contact variables: {{url}}, {{title}}, {{site}}")
 
-    enable_digg = models.BooleanField( _("Enable Digg"), default = True )
-    digg_title_template = models.TextField(_("Digg Share Title Template"), blank=True, null=True)
+    @property
+    def font_awesome_class(self):
+        return SocialShareLink.FONT_AWESOME_CLASSES[self.type]
 
-    enable_tumblr = models.BooleanField( _("Enable Tumblr"), default = True )
-    tumblr_name_template = models.TextField(_("Tumblr Share Title Template"), blank=True, null=True)
-    tumblr_description_template = models.TextField(_("Tumblr Share Description Template"), blank=True, null=True)
+    def get_share_url(self, full_path, object_title):
+        if self.type == SocialShareLink.TYPE_EMAIL:
+            return self.get_email_share_url(full_path, object_title)
+            
+        elif self.type == SocialShareLink.TYPE_TWITTER:
+            return self.get_twitter_share_url(full_path, object_title)
 
-    enable_reddit = models.BooleanField( _("Enable Reddit"), default = True )
-    reddit_title_template = models.TextField(_("Reddit Share Title Template"), blank=True, null=True)
+        elif self.type == SocialShareLink.TYPE_FACEBOOK:
+            return self.get_facebook_share_url(full_path, object_title)
 
-    enable_stumbleupon = models.BooleanField( _("Enable StumbleUpon"), default = True )
-    stumbleupon_title_template = models.TextField(_("StumbleUpon Share Title Template"), blank=True, null=True)
+        elif self.type == SocialShareLink.TYPE_GOOGLEPLUS:
+            return self.get_googleplus_share_url(full_path, object_title)
+            
+        elif self.type == SocialShareLink.TYPE_LINKEDIN:
+            return self.get_linkedin_share_url(full_path, object_title)
 
-    enable_delicious = models.BooleanField( _("Enable Delicious"), default = True )
-    delicious_title_template = models.TextField(_("Delicious Share Title Template"), blank=True, null=True)
+        elif self.type == SocialShareLink.TYPE_PINTEREST:
+            return self.get_pinterest_share_url(full_path, object_title)
 
+        elif self.type == SocialShareLink.TYPE_DIGG:
+            return self.get_digg_share_url(full_path, object_title)
+
+        elif self.type == SocialShareLink.TYPE_TUMBLR:
+            return self.get_tumblr_share_url(full_path, object_title)
+
+        elif self.type == SocialShareLink.TYPE_REDDIT:
+            return self.get_reddit_share_url(full_path, object_title)
+
+        elif self.type == SocialShareLink.TYPE_STUMBLEUPON:
+            return self.get_stumbleupon_share_url(full_path, object_title)
+
+        elif self.type == SocialShareLink.TYPE_DELICIOUS:
+            return self.get_delicious_share_url(full_path, object_title)
+        
 
     def get_email_share_url(self, page_url, page_title):
         site = Site.objects.get_current()
         query_root = 'mailto:'
         params = { 
-            'subject': get_rendered_content(self.email_subject_template, page_url, page_title, site),
-            'body': get_rendered_content(self.email_body_template, page_url, page_title, site)
+            'subject': self.get_rendered_content(self.title_template, page_url, page_title, site),
+            'body': self.get_rendered_content(self.description_template, page_url, page_title, site)
         }
-        to_rendered = get_rendered_content(self.email_to_template, page_url, page_title, site) if self.email_to_template else ''
+        to_rendered = self.get_rendered_content(self.to_template, page_url, page_title, site) if self.to_template else ''
         return '%s%s?%s' % (query_root, to_rendered, urllib.urlencode(params))
 
     def get_twitter_share_url(self, page_url, page_title):
         site = Site.objects.get_current()
-        query_root = 'https://twitter.com/share?'
+        query_root = 'http://twitter.com/intent/tweet?'
         params = { 
-            'url': page_url,
-            'title': get_rendered_content(self.twitter_share_template, page_url, page_title, site)
+            'text': self.get_rendered_content(self.title_template, page_url, page_title, site)
         }
         return '%s%s' % (query_root, urllib.urlencode(params))
 
@@ -73,8 +154,8 @@ class BaseSocialShareSettings( models.Model ):
         site = Site.objects.get_current()
         query_root = 'http://www.facebook.com/sharer.php?'
         params = { 
-            'url': page_url,
-            'title': get_rendered_content(self.facebook_title_template, page_url, page_title, site)
+            'u': page_url,
+            'title': self.get_rendered_content(self.title_template, page_url, page_title, site)
         }
         return '%s%s' % (query_root, urllib.urlencode(params))
 
@@ -91,7 +172,7 @@ class BaseSocialShareSettings( models.Model ):
         query_root = 'https://www.linkedin.com/shareArticle?'
         params = { 
             'url': page_url,
-            'title': get_rendered_content(self.linkedin_title_template, page_url, page_title, site)
+            'title': self.get_rendered_content(self.title_template, page_url, page_title, site)
         }
         return '%s%s' % (query_root, urllib.urlencode(params))
 
@@ -100,7 +181,7 @@ class BaseSocialShareSettings( models.Model ):
         query_root = 'https://pinterest.com/pin/create/bookmarklet/?'
         params = { 
             'url': page_url,
-            'description': get_rendered_content(self.pinterest_description_template, page_url, page_title, site)
+            'description': self.get_rendered_content(self.title_template, page_url, page_title, site)
         }
         return '%s%s' % (query_root, urllib.urlencode(params))
 
@@ -109,7 +190,7 @@ class BaseSocialShareSettings( models.Model ):
         query_root = 'http://digg.com/submit?'
         params = { 
             'url': page_url,
-            'title': get_rendered_content(self.digg_title_template, page_url, page_title, site)
+            'title': self.get_rendered_content(self.title_template, page_url, page_title, site)
         }
         return '%s%s' % (query_root, urllib.urlencode(params))
 
@@ -118,8 +199,8 @@ class BaseSocialShareSettings( models.Model ):
         query_root = 'http://www.tumblr.com/share/link?'
         params = { 
             'url': page_url,
-            'name': get_rendered_content(self.tumblr_name_template, page_url, page_title, site),
-            'description': get_rendered_content(self.tumblr_description_template, page_url, page_title, site)
+            'name': self.get_rendered_content(self.title_template, page_url, page_title, site),
+            'description': self.get_rendered_content(self.description_template, page_url, page_title, site)
         }
         return '%s%s' % (query_root, urllib.urlencode(params))
 
@@ -128,7 +209,7 @@ class BaseSocialShareSettings( models.Model ):
         query_root = 'http://reddit.com/submit?'
         params = { 
             'url': page_url,
-            'title': get_rendered_content(self.reddit_title_template, page_url, page_title, site)
+            'title': self.get_rendered_content(self.title_template, page_url, page_title, site)
         }
         return '%s%s' % (query_root, urllib.urlencode(params))
 
@@ -137,7 +218,7 @@ class BaseSocialShareSettings( models.Model ):
         query_root = 'http://www.stumbleupon.com/submit?'
         params = { 
             'url': page_url,
-            'title': get_rendered_content(self.stumbleupon_title_template, page_url, page_title, site)
+            'title': self.get_rendered_content(self.title_template, page_url, page_title, site)
         }
         return '%s%s' % (query_root, urllib.urlencode(params))
 
@@ -146,7 +227,7 @@ class BaseSocialShareSettings( models.Model ):
         query_root = 'https://delicious.com/save?v=5'
         params = { 
             'url': page_url,
-            'title': get_rendered_content(self.delicious_title_template, page_url, page_title, site)
+            'title': self.get_rendered_content(self.title_template, page_url, page_title, site)
         }
         return '%s%s' % (query_root, urllib.urlencode(params))
 
@@ -161,26 +242,4 @@ class BaseSocialShareSettings( models.Model ):
         })
         return template.render(context)
 
-    class Meta:
-        abstract=True        
 
-class SocialShareTrack( models.Model ):
-
-    created = models.DateTimeField(_('Created Date'), auto_now_add=True, 
-        blank=True, null=True)
-
-    service = models.CharField()
-    url = models.CharField()
-    ipaddress = models.CharField()
-
-
-class SiteBaseSocialShareSettings(BaseSocialShareSettings):
-    site = models.models.ForeignKey(Site)
-
-    @staticmethod
-    def get_site_settings():
-        current_site = Site.objects.get_current()
-        try:
-            return SiteBaseSocialShareSettings.objects.filter(site=current_site)[0]
-        except:
-            return None

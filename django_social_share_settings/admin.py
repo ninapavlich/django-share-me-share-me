@@ -2,7 +2,12 @@ from django.contrib import admin
 
 from .models import *
 
-class SiteBaseSocialShareSettingsAdmin(admin.ModelAdmin):
-    pass
+class SocialShareLinkInline(admin.TabularInline):
+    model = SocialShareLink	
+    extra = 0
+    sortable_field_name = "order"
 
-admin.site.register(SiteBaseSocialShareSettings, SiteBaseSocialShareSettingsAdmin)
+class SocialShareSettingsAdmin(admin.ModelAdmin):
+    inlines = [SocialShareLinkInline]
+
+admin.site.register(SocialShareSettings, SocialShareSettingsAdmin)
