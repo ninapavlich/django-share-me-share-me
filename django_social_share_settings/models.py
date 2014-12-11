@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.template import Template
+from django.template import Template, Context
 
 
 
@@ -26,7 +26,7 @@ class SocialShareSettings( models.Model ):
             return SocialShareSettings.objects.filter(site=current_site)[0]
         except:
             try:
-                return SocialShareSettings.objects.all[0]
+                return SocialShareSettings.objects.all()[0]
             except:
                 return None
      
