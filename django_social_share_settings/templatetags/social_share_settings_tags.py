@@ -7,7 +7,9 @@ from ..models import *
 def get_social_share_links(context):
 
     settings = SocialShareSettings.get_site_settings()
-    return settings.get_social_share_links()
+    if settings:
+        return settings.get_social_share_links()
+    return []
     
 @register.assignment_tag(takes_context=True)
 def get_social_share_link(context, share_link, object_url, object_title):
