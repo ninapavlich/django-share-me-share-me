@@ -155,7 +155,7 @@ class SocialShareLink( models.Model ):
 
     def get_twitter_share_url(self, page_url, page_title):
         site = Site.objects.get_current()
-        query_root = 'http://twitter.com/intent/tweet?'
+        query_root = 'https://twitter.com/intent/tweet?'
         params = { 
             'text': self.get_rendered_content(self.title_template, page_url, page_title, site)
         }
@@ -163,7 +163,7 @@ class SocialShareLink( models.Model ):
 
     def get_facebook_share_url(self, page_url, page_title):
         site = Site.objects.get_current()
-        query_root = 'http://www.facebook.com/sharer.php?'
+        query_root = 'https://www.facebook.com/sharer.php?'
         params = { 
             'u': page_url,
             'title': self.get_rendered_content(self.title_template, page_url, page_title, site)
@@ -198,7 +198,7 @@ class SocialShareLink( models.Model ):
 
     def get_digg_share_url(self, page_url, page_title):
         site = Site.objects.get_current()
-        query_root = 'http://digg.com/submit?'
+        query_root = 'https://digg.com/submit?'
         params = { 
             'url': page_url,
             'title': self.get_rendered_content(self.title_template, page_url, page_title, site)
@@ -207,7 +207,7 @@ class SocialShareLink( models.Model ):
 
     def get_tumblr_share_url(self, page_url, page_title):
         site = Site.objects.get_current()
-        query_root = 'http://www.tumblr.com/share/link?'
+        query_root = 'https://www.tumblr.com/share/link?'
         params = { 
             'url': page_url,
             'name': self.get_rendered_content(self.title_template, page_url, page_title, site),
@@ -217,7 +217,7 @@ class SocialShareLink( models.Model ):
 
     def get_reddit_share_url(self, page_url, page_title):
         site = Site.objects.get_current()
-        query_root = 'http://reddit.com/submit?'
+        query_root = 'https://reddit.com/submit?'
         params = { 
             'url': page_url,
             'title': self.get_rendered_content(self.title_template, page_url, page_title, site)
@@ -226,7 +226,7 @@ class SocialShareLink( models.Model ):
 
     def get_stumbleupon_share_url(self, page_url, page_title):
         site = Site.objects.get_current()
-        query_root = 'http://www.stumbleupon.com/submit?'
+        query_root = 'https://www.stumbleupon.com/submit?'
         params = { 
             'url': page_url,
             'title': self.get_rendered_content(self.title_template, page_url, page_title, site)
