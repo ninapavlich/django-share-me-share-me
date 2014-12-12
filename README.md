@@ -10,9 +10,7 @@ Add to your requirements.txt file:
 ```python
 #requirements.txt
 
-    ...
-    -e git+https://github.com/ninapavlich/django-social-share-settings.git@2ac1309c5f2e4a816263ee689bcc60655a0643b5#egg=django-social-share-settings-dev
-    ...
+-e git+https://github.com/ninapavlich/django-social-share-settings.git@2ac1309c5f2e4a816263ee689bcc60655a0643b5#egg=django-social-share-settings-dev
 
 ```
 Run install
