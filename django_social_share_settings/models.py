@@ -234,8 +234,9 @@ class SocialShareLink( models.Model ):
         return '%s%s' % (query_root, urllib.urlencode(params))
 
     def get_delicious_share_url(self, page_url, page_title):
+
         site = Site.objects.get_current()
-        query_root = 'https://delicious.com/save?v=5'
+        query_root = 'https://delicious.com/save?v=5&provider=CCL&noui&jump=close'
         params = { 
             'url': page_url,
             'title': self.get_rendered_content(self.title_template, page_url, page_title, site)
