@@ -13,14 +13,14 @@ Add to your requirements.txt file:
 -e git+https://github.com/ninapavlich/django-social-share-settings.git@2ac1309c5f2e4a816263ee689bcc60655a0643b5#egg=django-social-share-settings-dev
 
 ```
-Run install
+Run install:
 ```
 > pip install -r requirements.txt
 ```
 
 #CMS Usage:
 
-To make social settings administerable, include django_social_share_settings and rake the database
+To make social settings administerable, include django_social_share_settings and rake the database:
 ```python
 #settings.py
 
@@ -69,7 +69,7 @@ See screencast of sticky widget in action: http://screencast.com/t/Gm8Sah4IMQ
 ```html
 #base-template.html
 <!-- Include Font Awesome  for easier social icons -->
-<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <!-- Include js plugin and css or compile into your source js -->
 <link rel="stylesheet" href="{% static 'ccl/sticky.min.css' %}"/>
