@@ -37,6 +37,15 @@ To make social settings administerable, include django_social_share_settings and
 > python manage.py migrate django_social_share_settings
 ```
 
+To make track social shares:
+
+```python
+#urls.py
+(r'^', include('django_social_share_settings.urls')),    
+```
+
+
+
 #Template Usage:
 To output share icons based on the settings from the cms, use the 
 "social_share_settings_tags" template tags. In this case I'm using 

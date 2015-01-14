@@ -1,11 +1,12 @@
 import urllib
 
 from django.db import models
-from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.template import Template, Context
+
 
 
 
@@ -101,6 +102,26 @@ class SocialShareLink( models.Model ):
         return SocialShareLink.FONT_AWESOME_CLASSES[self.type]
 
     def get_share_url(self, full_path, object_title):
+
+        if self.parent.track_social_share_clicks and self.type != SocialShareLink.TYPE_EMAIL:
+            return self._get_track_url(full_path, object_title)
+        else:
+            return self._get_share_url(full_path, object_title)
+
+    def _get_track_url(self, full_path, object_title):
+
+        path = reverse('share_counter_redirect_view')
+        
+        params = { 
+            'url': full_path,
+            'type': self.type,
+            'title': object_title
+        }
+        track_url = '%s?%s' % (path, urllib.urlencode(params))
+
+        return track_url
+
+    def _get_share_url(self, full_path, object_title):
         if self.type == SocialShareLink.TYPE_EMAIL:
             return self.get_email_share_url(full_path, object_title)
             
@@ -255,3 +276,32 @@ class SocialShareLink( models.Model ):
         return template.render(context)
 
 
+class SocialShareTrack( models.Model ):
+
+    domain = models.CharField(_("Domain"), blank=True, null=True, max_length=255,)
+    path = models.CharField(_("Path"), blank=True, null=True, max_length=255,)
+    full_url = models.CharField(_("Full URL"), blank=True, null=True, max_length=255,)
+
+    created = models.DateTimeField(_('Created Date'), auto_now_add=True, 
+        blank=True, null=True)
+
+    type = models.CharField("Service Type", max_length=255, 
+        null=True, blank=True, choices=SocialShareLink.SERVICE_TYPES)
+    
+    @staticmethod
+    def get_count(domain=None, path=None, full_url=None, type=None, from_datetime=None, to_datetime=None ):
+        #TODO
+        return 0
+
+    @classmethod
+    def track(cls, domain, path, full_url, type):
+        track = cls(
+            domain=domain,
+            path=path,
+            full_url=full_url,
+            type=type
+        )
+        print "track? "
+        print track
+        track.save()
+        return track
