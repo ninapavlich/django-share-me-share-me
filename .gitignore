@@ -10,4 +10,3 @@ venv/
 node_modules/
 src/
 *.log
-django_social_share_settings/migrations/
