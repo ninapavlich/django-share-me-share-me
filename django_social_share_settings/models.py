@@ -30,6 +30,18 @@ class SocialShareSettings( models.Model ):
                 return SocialShareSettings.objects.all()[0]
             except:
                 return None
+
+    @property
+    def title(self):
+        if self.site:
+            return 'Social Share Settings %s'%(self.site.domain)
+        return "Default Social Share Settings"
+
+    class Meta:
+        verbose_name_plural = _("Social Share Settings")
+
+    def __unicode__(self):
+        return self.title
      
 
 # class SocialShareTrack( models.Model ):
@@ -301,7 +313,5 @@ class SocialShareTrack( models.Model ):
             full_url=full_url,
             type=type
         )
-        print "track? "
-        print track
         track.save()
         return track

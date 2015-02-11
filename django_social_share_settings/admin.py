@@ -10,10 +10,14 @@ class SocialShareLinkInline(admin.TabularInline):
 class SocialShareSettingsAdmin(admin.ModelAdmin):
     inlines = [SocialShareLinkInline]
 
+    list_display = ('title', 'site',)
+    readonly_fields = ('title',)
+    list_filter = ('site',)
+
 class SocialShareTrackAdmin(admin.ModelAdmin):
 
-    list_display = ('full_url', 'domain', 'path', 'type')
-    list_filters = ('full_url', 'domain', 'path', 'type', 'created')
+    list_display = ('created', 'full_url', 'domain', 'path', 'type')
+    list_filter = ('full_url', 'domain', 'path', 'type', 'created')
 
 
 admin.site.register(SocialShareSettings, SocialShareSettingsAdmin)
