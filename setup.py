@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 #this is a test
 setup(name = 'django-social-share-settings',
       description = 'Model and front end library for choosing and integrating social media share widgets.',
-      version = '0.1',
+      version = '0.2',
       url = 'https://github.com/ninapavlich/django-social-share-settings',
       author = 'Nina Pavlich',
       author_email='nina@cgparntersllc.com',

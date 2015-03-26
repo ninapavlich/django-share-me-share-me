@@ -1,0 +1,8 @@
+include AUTHORS.rst
+include LICENSE.txt
+include CHANGELOG.rst
+include README.md
+include django_social_share_settings/static/django_social_share_settings/css/sticky.css
+include django_social_share_settings/static/django_social_share_settings/css/sticky.min.css
+include django_social_share_settings/static/django_social_share_settings/js/sticky.jqueryplugin.js
+recursive-include django_social_share_settings/ *.py *.css *.js
