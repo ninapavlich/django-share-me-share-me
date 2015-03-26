@@ -2,8 +2,8 @@ include AUTHORS.rst
 include LICENSE.txt
 include CHANGELOG.rst
 include README.md
-include social_share_settings/scss/_sticky.scss
-include social_share_settings/static/social_share_settings/css/sticky.css
-include social_share_settings/static/social_share_settings/css/sticky.min.css
-include social_share_settings/static/social_share_settings/js/sticky.jqueryplugin.js
-recursive-include social_share_settings/ *.py *.css *.js
+include share_me_share_me/scss/_sticky.scss
+include share_me_share_me/static/share_me_share_me/css/sticky.css
+include share_me_share_me/static/share_me_share_me/css/sticky.min.css
+include share_me_share_me/static/share_me_share_me/js/sticky.jqueryplugin.js
+recursive-include share_me_share_me/ *.py *.css *.js

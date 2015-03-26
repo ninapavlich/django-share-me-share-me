@@ -301,9 +301,27 @@ class SocialShareTrack( models.Model ):
         null=True, blank=True, choices=SocialShareLink.SERVICE_TYPES)
     
     @staticmethod
-    def get_count(domain=None, path=None, full_url=None, type=None, from_datetime=None, to_datetime=None ):
-        #TODO
-        return 0
+    def get_count(type=None, from_datetime=None, to_datetime=None, domain=None, path=None, full_url=None ):
+        all_tracks = SocialShareTrack.objects.all()
+        if type:
+            all_tracks = all_tracks.filter(type=type)
+
+        if from_datetime:
+            all_tracks = all_tracks.filter(created__gte=from_datetime)
+
+        if to_datetime:
+            all_tracks = all_tracks.filter(created__lte=to_datetime)
+
+        if domain:
+            all_tracks = all_tracks.filter(domain=domain)
+
+        if path:
+            all_tracks = all_tracks.filter(path=path)
+
+        if full_url:
+            all_tracks = all_tracks.filter(full_url=full_url)
+
+        return all_tracks
 
     @classmethod
     def track(cls, domain, path, full_url, type):

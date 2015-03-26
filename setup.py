@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 #this is a test
-setup(name = 'django-social-share-settings',
+setup(name = 'django-share-me-share-me',
       description = 'Model and front end library for choosing and integrating social media share widgets.',
-      version = '0.2',
-      url = 'https://github.com/ninapavlich/django-social-share-settings',
+      version = '1.0',
+      url = 'https://github.com/ninapavlich/django-share-me-share-me',
       author = 'Nina Pavlich',
-      author_email='nina@cgparntersllc.com',
+      author_email='nina@ninalp.com',
       license = 'BSD',
       packages=find_packages(exclude=['ez_setup']),
       zip_safe = False,

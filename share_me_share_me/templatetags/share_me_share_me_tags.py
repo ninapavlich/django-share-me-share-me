@@ -26,6 +26,11 @@ def get_social_share_link(context, share_link, object_url, object_title):
         full_path = url
 
     return share_link.get_share_url(full_path, object_title)
+
+@register.assignment_tag(takes_context=True)
+def get_social_share_count(context, type):
+
+    return SocialShareTrack.get_count(type)   
         
 
     

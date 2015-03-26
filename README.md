@@ -7,7 +7,7 @@ Model and front end library for choosing and integrating social media share widg
 #Install
 
 ```
-pip install django-social-share-settings
+pip install django-share-me-share-me
 ```
 
 
@@ -20,21 +20,21 @@ To make social settings administerable, include social_share_settings and rake t
 
 	INSTALLED_APPS = (
     ...
-    'social_share_settings',
+    'share_me_share_me',
     ...
     )
 ```
 
 ```
-> python manage.py schemamigration social_share_settings --initial
-> python manage.py migrate social_share_settings
+> python manage.py schemamigration share_me_share_me --initial
+> python manage.py migrate share_me_share_me
 ```
 
 To make track social shares:
 
 ```python
 #urls.py
-(r'^', include('social_share_settings.urls')),    
+(r'^', include('share_me_share_me.urls')),    
 ```
 
 
@@ -45,7 +45,7 @@ To output share icons based on the settings from the cms, use the
 "Font Awesome" to render the icons.
 ```
 #social-share-partial.html
-{% load social_share_settings_tags %}
+{% load share_me_share_me_tags %}
 
 {% get_social_share_links as social_links %}
 
