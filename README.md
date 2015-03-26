@@ -1,4 +1,4 @@
-django-social-share-settings
+django-share-me-share-me
 =======================
 
 Model and front end library for choosing and integrating social media share widgets, similar to AddThis.
