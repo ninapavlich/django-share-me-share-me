@@ -19,10 +19,11 @@ def get_social_share_link(context, share_link, object_url, object_title):
 
     """
     request = context['request']
+    url = unicode(object_url)
     if 'http' not in object_url.lower():
-        full_path = ''.join(('http', ('', 's')[request.is_secure()], '://', request.META['HTTP_HOST'], object_url))
+        full_path = ''.join(('http', ('', 's')[request.is_secure()], '://', request.META['HTTP_HOST'], url))
     else:
-        full_path = object_url
+        full_path = url
 
     return share_link.get_share_url(full_path, object_title)
         
