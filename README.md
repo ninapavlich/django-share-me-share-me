@@ -13,28 +13,28 @@ pip install django-social-share-settings
 
 #CMS Usage:
 
-To make social settings administerable, include django_social_share_settings and rake the database:
+To make social settings administerable, include social_share_settings and rake the database:
 ```python
 #settings.py
 
 
 	INSTALLED_APPS = (
     ...
-    'django_social_share_settings',
+    'social_share_settings',
     ...
     )
 ```
 
 ```
-> python manage.py schemamigration django_social_share_settings --initial
-> python manage.py migrate django_social_share_settings
+> python manage.py schemamigration social_share_settings --initial
+> python manage.py migrate social_share_settings
 ```
 
 To make track social shares:
 
 ```python
 #urls.py
-(r'^', include('django_social_share_settings.urls')),    
+(r'^', include('social_share_settings.urls')),    
 ```
 
 
