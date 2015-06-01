@@ -1,0 +1,11 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+
+
+{% block object-tools-items %}
+    {% if not is_popup %}
+        <li><a href="{% url 'dashboard_stats_paths_share_me_share_me' %}">Most Shared Paths</a></li>
+        <li><a href="{% url 'dashboard_stats_services_share_me_share_me' %}">Most Shared Services</a></li>
+    {% endif %}
+    {{block.super}}
+{% endblock %}

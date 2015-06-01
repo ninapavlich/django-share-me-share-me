@@ -18,7 +18,10 @@ class SocialShareTrackAdmin(admin.ModelAdmin):
 
     list_display = ('created', 'full_url', 'domain', 'path', 'type')
     list_filter = ('full_url', 'domain', 'path', 'type', 'created')
-
+    search_fields = ('full_url','domain','path', 'type')
+    fields = ['domain','path','full_url','type','created']
+    csv_fields = ['domain','path','full_url','type','created']
+    readonly_fields = ('created',)
 
 admin.site.register(SocialShareSettings, SocialShareSettingsAdmin)
 admin.site.register(SocialShareTrack, SocialShareTrackAdmin)

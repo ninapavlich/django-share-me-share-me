@@ -1,3 +1,8 @@
+from django.conf import settings
+from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
+from django.utils.safestring import mark_safe
+
 from django.template import Library
 register = Library()
 
@@ -33,4 +38,12 @@ def get_social_share_count(context, type):
     return SocialShareTrack.get_count(type)   
         
 
-    
+@register.assignment_tag()
+def item_admin_link(object, attr):
+    link = reverse('admin:share_me_share_me_socialsharetrack_changelist')
+    return '%s?q=%s'%(link, object[attr])
+
+
+@register.assignment_tag()
+def get_stats_display(object, attr):
+    return '%s (%s)'%(object[attr], object['total'])

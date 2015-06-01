@@ -1,0 +1,38 @@
+{% extends "admin/base_site.html" %}
+
+{% load i18n grp_tags admin_urls admin_static admin_list share_me_share_me_tags %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block content_title %}
+    <h1>{{title}}</h1>
+{% endblock %}
+
+<!-- BREADCRUMBS -- >
+{% block breadcrumbs %}
+    {% if not is_popup %}
+        <ul class="grp-horizontal-list">
+            <li><a href="{% url 'admin:index' %}">{% trans "Home" %}</a></li>
+            <li><a href="{% url 'admin:app_list' app_label='share_me_share_me' %}">Share Me Share Me</a></li>
+            <li><a href="{% url 'admin:share_me_share_me_socialsharetrack_changelist' %}">Social Share Tracks</a></li>
+            <li>{{title}}</li>
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock %}
+
+{% block javascripts %}
+  {{block.super}}
+{% endblock %}
+
+{% block content %}
+{% for object in object_list %}
+
+
+<div class="grp-row"><a href="/admin/share_me_share_me/socialsharetrack/?type__exact={{object.type}}">{{object.type}} <strong>({{object.total}})</strong></a></div>
+
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% load i18n share_me_share_me_tags %}
+
+{% for object in object_list %}
+<div class="grp-module" id="module-{{object.slug}}">
+  <h3>{{object.title}}</h3>
+
+  {% for link in object.links %}
+
+  {% get_stats_display link object.display_stat as link_display %}
+  {% item_admin_link link object.display_stat as admin_link %}
+  
+  <div class="grp-row"><a class="grp-link-internal" href="{{admin_link}}">{{link_display}}</a></div>
+  {% endfor %}
+
+  {% if object.more_link %}
+  <div class="grp-row"><a class="grp-link-internal" href="{{object.more_link}}">{{object.more_link_title}}</a></div>
+  {% endif %}
+
+</div>
+{% endfor %}  
